@@ -1,0 +1,44 @@
+# depslib dependency file v1.0
+1553160401 source:f:\codes\huaweicode\v1\main.cpp
+	<iostream>
+	<vector>
+	<string>
+	<fstream>
+	<cassert>
+	<iterator>
+	"AdjMatrixDirNetwork.h"
+	"ShortestPathDijkstra.h"
+
+1553151384 f:\codes\huaweicode\v1\adjmatrixdirnetwork.h
+	<iostream>
+
+1553150535 f:\codes\huaweicode\v1\shortestpathdijkstra.h
+	"AdjMatrixDirNetwork.h"
+	<iostream>
+
+1553265536 source:j:\huaweicode\v1\main.cpp
+	<iostream>
+	<vector>
+	<string>
+	<fstream>
+	<cassert>
+	<iterator>
+	"AdjMatrix.h"
+	"Dijkstra.h"
+
+1553151384 j:\huaweicode\v1\adjmatrixdirnetwork.h
+	<iostream>
+
+1553150535 j:\huaweicode\v1\shortestpathdijkstra.h
+	"AdjMatrixDirNetwork.h"
+	<iostream>
+
+1553266194 j:\huaweicode\v1\adjmatrix.h
+	<iostream>
+	<vector>
+
+1553255165 source:j:\huaweicode\v1\test.cpp
+
+1553265102 j:\huaweicode\v1\dijkstra.h
+	"AdjMatrix.h"
+
