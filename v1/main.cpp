@@ -8,78 +8,71 @@
 //#include "ShortestPathDijkstra.h"
 #include "AdjMatrix.h"
 #include "Dijkstra.h"
+#include "Graph.h"
 
 using namespace std;
-
-void readText(string filePath,vector<vector<int> > &targetVector,int lineNum);
-void loadText(vector<vector<int> >&,vector<vector<int> >&,vector<vector<int> >&,const int*,const string*);
-void getNetNode(vector<vector<int> >&,const vector<vector<int> >&);
-//void InsertArc(AdjMatrixDirNetwork&,const vector<vector<int> >&);
+void creatRoadIDMatrix(const vector<vector<int> > &pathTable,vector<vector<int> > &roadIDMatrix,const Graph &g);
 int main()
 {
-    vector<vector<int> > car;
-    vector<vector<int> > cross;
-    vector<vector<int> > road;
-    vector<vector<int> > netNode;
+    Graph g;//读取赛题文件
+    getGraph(g);
+    vector<vector<int> > netNode;//
     vector<int> path;
-    vector<int> pathTable;
+    vector<vector<int> > pathTable;
+    vector<vector<int> > p;
+    vector<vector<int> > pt;
+    vector<vector<int> > roadIDMatrix;
     vector<int> vexs;
     int i;
     AdjMatrix graf;
-    int lineNum[3] = {5,5,7};
-    string filePath[3] = {"../config/car.txt","../config/cross.txt","../config/road.txt"};
-    loadText(car,cross,road,lineNum,filePath);
-    int crossNum = cross.size();
+    int crossNum = g.cross.size();
     for(i = 1;i<= crossNum;i++)
         vexs.push_back(i);
-    getNetNode(netNode,road);
-    coutVector(netNode);
+    getNetNode(netNode,g.road);
+//    coutVector(netNode);
     creatMetrix(graf,vexs,netNode,crossNum);
-    coutVector(graf.matrix);
-    shortPathDijkstra(graf,0,path,pathTable);
-    coutVector(pathTable);
-    coutVector(path);
+//    coutVector(graf.matrix);
+    shortPathDijkstra(graf,0,pathTable);
+    creatRoadIDMatrix(pathTable,roadIDMatrix,g);
+    coutVector(roadIDMatrix);
+//    coutVector(pathTable);
+//    coutVector(path);
+    shortPathMatrix(graf,pt);
+    creatRoadIDMatrix(pt,p,g);
+    coutVector(p);
+    coutVector(pt);
 	return 0;
 }
-void getNetNode(vector<vector<int> > &net,const vector<vector<int> >&road)
+
+void creatRoadIDMatrix(const vector<vector<int> > &pathTable,vector<vector<int> > &roadIDMatrix,const Graph &g)
 {
-    int i,length,line,row;
-    int roadSize = road.size();
-    vector<int> temp(3);
-    for(i = 0;i < roadSize;i++)
+    int i,j,w,n;
+    bool eq1,eq2;
+    int pSize = pathTable.size();
+    int rSize = g.road.size();
+    vector<int> temp;
+    for(i = 0;i < pSize;i++)
     {
-        length = road[i][2];
-        line = road[i][4];
-        row = road[i][5];
-        net.push_back({line,row,length});
-        if(road[i][6] == 1)
-            net.push_back({row,line,length});
+        temp.push_back(pathTable[i][0]);
+        temp.push_back(pathTable[i][1]);
+        n = pathTable[i].size();
+        for(w = 2;w < n;w++)
+        {
+            for(j = 0;j < rSize;j++)
+            {
+                eq1 = ( (pathTable[i][w] == g.road[j][4]) && (pathTable[i][w+1] == g.road[j][5]) );
+                eq2 = ( (pathTable[i][w+1] == g.road[j][4]) && (pathTable[i][w] == g.road[j][5]) );
+                if( (eq1 || eq2) && (g.road[j][6] == 1) )
+                {
+                    temp.push_back(g.road[j][0]);
+                }
+            }
+        }
+        roadIDMatrix.push_back(temp);
+        temp.clear();
     }
 }
-void readText(string filePath,vector<vector<int> > &targetVector,int lineNum)
-{
-    ifstream inf;
-    string s;
-    char p;//标点
-    vector<int> lane(lineNum);
-    inf.open(filePath);
-//    if(!inf.is_open())
-//        cout << "Can't open this file in the path : " << filePath << endl;
-    getline(inf, s);//getline(inf,s)是逐行读取inf中的文件信息,读取第一行，丢掉
-    while (!inf.eof())
-    {
-        inf >> p;
-        for(int i = 0;i < lineNum;i++)
-            inf >> lane[i] >> p;
-        targetVector.push_back(lane);
-    }
-    targetVector.erase(targetVector.end() - 1 ,targetVector.end());
-    inf.close();
-}
-void loadText(vector<vector<int> > &car,vector<vector<int> > &cross,vector<vector<int> > &road,const int *n,const string *p)
-{
-    readText(p[0],car,n[0]);
-    readText(p[1],cross,n[1]);;
-    readText(p[2],road,n[2]);
-}
+
+
+
 

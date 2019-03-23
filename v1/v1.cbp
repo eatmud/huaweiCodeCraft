@@ -34,6 +34,7 @@
 		</Compiler>
 		<Unit filename="AdjMatrix.h" />
 		<Unit filename="Dijkstra.h" />
+		<Unit filename="Graph.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="test.cpp" />
 		<Extensions>
